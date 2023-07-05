@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.views.generic.list import ListView
+
 from .models import Task
 from .forms import TaskForm
 # Create your views here.
@@ -28,7 +30,8 @@ def create_task(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            task = form.save()
+            task = form.save(commit=False)
+            task.owner = request.user
             task.save()
             return redirect('task_list')
 
@@ -73,4 +76,23 @@ def login_user(request):
             messages.error(request, 'no user found bitch!')
 
     context = {'page': page}
+    return render(request, 'base/login_register.html', context)
+
+def logout_user(request):
+    logout(request)
+    return redirect('lp')
+
+def register_user(request):
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('task_list')
+
+    context = { 'form': form }
     return render(request, 'base/login_register.html', context)
