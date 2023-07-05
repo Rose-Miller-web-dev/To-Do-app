@@ -1,0 +1,22 @@
+<div class="container">
+    {% if page == 'login' %}
+
+        <form action="" method="POST" class="form-group">
+            {% csrf_token %}
+
+            <label for="username">username</label>
+            <input type="text" name="username">
+
+            <br>
+
+            <label for="password">password</label>
+            <input type="password" name="password">
+
+            <input type="submit" name="" id="" value="login">
+        </form>
+
+    {% else %}
+
+
+    {% endif %}
+</div>

@@ -1,0 +1,9 @@
+<div class="container">
+    <h4 class="text-info">Are you sure you wanna delete {{ task }}?</h4>
+    <form action="" method="POST" class="form-group">
+        {% csrf_token %}
+        <input type="submit" value="Delete">
+        <a href="{{ request.META.HTTP_REFERER }}">Back</a>
+    </form>
+    
+</div>

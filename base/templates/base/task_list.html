@@ -1,0 +1,22 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+
+<div class="container">
+    {% for t in tasks %}
+        {% if t.owner == request.user %}
+
+            <a href="{% url 'task_detail' t.id %}" >{{ t.title }}</a>    
+            <p>{{ t.body }}</p>
+            
+            <br>
+
+            <a href="{% url 'update_task' t.id %}">edit</a>&nbsp;
+            <a href="{% url 'delete_task' t.id %}">delete</a>
+
+        {% endif %}
+        <hr>
+    {% endfor %}
+</div>
+
+{% endblock %}
