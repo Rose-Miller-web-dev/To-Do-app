@@ -16,7 +16,19 @@ def landing_page(request):
 
 def task_list(request):
     tasks = Task.objects.all()
-    context = {'tasks': tasks}
+    search_input = request.GET.get('search-area') or ''
+    filter_name = request.GET.get('filtername')
+
+    if filter_name == 'body' :
+        tasks = Task.objects.filter(body__icontains=search_input)
+
+    if filter_name == 'title' :
+        tasks = Task.objects.filter(title__icontains=search_input)
+    
+    else :
+        filter_name = 'title'
+    
+    context = {'tasks': tasks, 'search_input': search_input}
     return render(request, 'base/task_list.html', context)
 
 def task_detail(request, pk):
